@@ -174,7 +174,42 @@
     // Iniciar app
     document.addEventListener('DOMContentLoaded', () => {
       cargar();
+
+    // Sistema de renderizado
+    function render() {
+      if (currentTab === 'resumen') renderResumen();
+      else if (currentTab === 'movimientos') renderMovimientos();
+      else if (currentTab === 'deudas') renderDeudas();
+    }
+
+    function renderResumen() {
+      const content = document.getElementById('resumen');
+      content.innerHTML = '<p class="empty">Cargando resumen...</p>';
+    }
+
+    function renderMovimientos() {
+      const content = document.getElementById('movimientos');
+      content.innerHTML = '<p class="empty">Cargando movimientos...</p>';
+    }
+
+    function renderDeudas() {
+      const content = document.getElementById('deudas');
+      content.innerHTML = '<p class="empty">Cargando deudas...</p>';
+    }
+
+    // Event listeners para tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        e.target.classList.add('active');
+        currentTab = e.target.dataset.tab;
+        document.getElementById(currentTab).classList.add('active');
+        render();
+      });
     });
+
+    console.log('✓ Sistema de renderizado listo');
 
   </script>
 </body>
