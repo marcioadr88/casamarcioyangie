@@ -205,11 +205,78 @@
         e.target.classList.add('active');
         currentTab = e.target.dataset.tab;
         document.getElementById(currentTab).classList.add('active');
-        render();
+
+    // Modal y formulario
+    function abrirModal() {
+      document.getElementById('modal-entrada').classList.add('open');
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-entrada').classList.remove('open');
+      resetearFormulario();
+    }
+
+    function resetearFormulario() {
+      currentType = 'gasto';
+      currentCat = 'hogar';
+      currentWho = 'Marcio';
+      document.getElementById('monto').value = '';
+      document.getElementById('desc').value = '';
+      document.getElementById('cat-nombre').value = '';
+      document.getElementById('cat-emoji').value = '';
+      actualizarBotones();
+    }
+
+    function actualizarBotones() {
+      document.querySelectorAll('.btn-grupo-item').forEach(b => {
+        if (b.dataset.type) {
+          b.classList.toggle('active', b.dataset.type === currentType);
+        }
+        if (b.dataset.cat) {
+          b.classList.toggle('active', b.dataset.cat === currentCat);
+        }
+        if (b.dataset.who) {
+          b.classList.toggle('active', b.dataset.who === currentWho);
+        }
+      });
+    }
+
+    // Event listeners del modal
+    document.getElementById('btn-agregar').addEventListener('click', abrirModal);
+    document.getElementById('btn-cerrar').addEventListener('click', cerrarModal);
+
+    // Cerrar modal al tocar overlay
+    document.getElementById('modal-entrada').addEventListener('click', (e) => {
+      if (e.target.id === 'modal-entrada') cerrarModal();
+    });
+
+    // Event listeners para tipo
+    document.querySelectorAll('#tipo-group .btn-grupo-item').forEach(b => {
+      b.addEventListener('click', (e) => {
+        currentType = e.target.dataset.type;
+        actualizarBotones();
       });
     });
 
-    console.log('✓ Sistema de renderizado listo');
+    // Event listeners para categoría
+    document.querySelectorAll('#cat-group .btn-grupo-item').forEach(b => {
+      b.addEventListener('click', (e) => {
+        currentCat = e.target.dataset.cat;
+        const customDiv = document.getElementById('cat-custom');
+        customDiv.style.display = currentCat === 'otro' ? 'block' : 'none';
+        actualizarBotones();
+      });
+    });
+
+    // Event listeners para quién paga
+    document.querySelectorAll('#who-group .btn-grupo-item').forEach(b => {
+      b.addEventListener('click', (e) => {
+        currentWho = e.target.dataset.who;
+        actualizarBotones();
+      });
+    });
+
+    console.log('✓ Formulario modal listo');
 
   </script>
 </body>
