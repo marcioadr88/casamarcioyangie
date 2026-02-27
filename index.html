@@ -153,6 +153,25 @@
     let viewMonth = new Date().getMonth();
     let viewYear = new Date().getFullYear();
     console.log('✓ App iniciada');
+    // Funciones de utilidad
+    function fmt(n) {
+      if (!n) return "Gs. 0";
+      return "Gs. " + Math.floor(n).toLocaleString("es-PY");
+    }
+    function getMonthEntries() {
+      return entries.filter(e => e.month === viewMonth && e.year === viewYear);
+    }
+    function getMonthName(month) {
+      const names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+      return names[month];
+    }
+    function getWeekday(dateStr) {
+      const date = new Date(dateStr);
+      const days = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+      return days[date.getDay()];
+    }
+    console.log("✓ Funciones de utilidad listas");
   </script>
 </body>
 </html>
