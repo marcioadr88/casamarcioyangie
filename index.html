@@ -1,89 +1,158 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
-
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/12.10.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/12.10.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/12.10.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/12.10.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/12.10.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/12.10.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/12.10.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/12.10.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/12.10.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/12.10.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gastos Marcio y Angie</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:wght@400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F5F0E8;
+      --accent: #C94F2C;
+      --green: #2C7A4B;
+      --gold: #E8A020;
+      --ink: #1A1208;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; -webkit-user-select: none; user-select: none; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); padding: 1rem; max-width: 600px; margin: 0 auto; }
+    h1, h2, h3 { font-family: 'DM Serif Display', serif; }
+    h1 { margin-bottom: 1.5rem; font-size: 2rem; }
+    h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+    h3 { font-size: 1.25rem; margin-bottom: 0.75rem; margin-top: 1rem; }
+    .app { display: flex; flex-direction: column; }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .tab-btn { flex: 1; padding: 0.75rem; border: none; background: #ddd; color: var(--ink); cursor: pointer; font-weight: 500; border-radius: 0.25rem; transition: background 0.2s; }
+    .tab-btn:active { transform: scale(0.98); }
+    .tab-btn.active { background: var(--accent); color: white; }
+    .tab-content { display: none; min-height: 300px; }
+    .tab-content.active { display: block; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: flex-end; }
+    .modal.open { display: flex; }
+    .modal-content { background: white; width: 100%; padding: 1.5rem; border-radius: 1rem 1rem 0 0; max-height: 90vh; overflow-y: auto; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+    .form-group input { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 0.25rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; }
+    .btn-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 0.5rem; margin-bottom: 1rem; }
+    .btn-grupo-item { padding: 0.75rem; border: 2px solid #ddd; background: white; cursor: pointer; border-radius: 0.25rem; font-weight: 500; transition: all 0.2s; }
+    .btn-grupo-item:active { transform: scale(0.98); }
+    .btn-grupo-item.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .form-actions { display: flex; gap: 0.5rem; margin-top: 1.5rem; }
+    .btn-guardar, .btn-cancelar { flex: 1; padding: 0.75rem; border: none; border-radius: 0.25rem; font-weight: 500; cursor: pointer; font-size: 1rem; transition: all 0.2s; }
+    .btn-guardar { background: var(--green); color: white; }
+    .btn-guardar:active { transform: scale(0.98); }
+    .btn-cancelar { background: #ddd; color: var(--ink); }
+    .btn-cancelar:active { transform: scale(0.98); }
+    .btn-principal { width: 100%; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: 0.5rem; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 1rem; transition: all 0.2s; }
+    .btn-principal:active { transform: scale(0.98); }
+    .entry-card { background: white; padding: 1rem; margin-bottom: 0.75rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+    .entry-header { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 0.5rem; }
+    .entry-icon { font-size: 1.5rem; }
+    .entry-category { flex: 1; font-weight: 500; }
+    .entry-amount { font-weight: 700; color: var(--accent); }
+    .entry-meta { display: flex; gap: 1rem; font-size: 0.875rem; color: #666; margin-bottom: 0.5rem; }
+    .entry-desc { font-size: 0.875rem; color: #666; margin-bottom: 0.5rem; }
+    .entry-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.5rem; }
+    .btn-edit, .btn-delete, .btn-marcar-pagada, .btn-marcar-pendiente { padding: 0.5rem 1rem; border: none; cursor: pointer; border-radius: 0.25rem; font-size: 0.875rem; transition: all 0.2s; }
+    .btn-edit, .btn-delete { background: #f0f0f0; color: var(--ink); }
+    .btn-marcar-pagada, .btn-marcar-pendiente { width: 100%; background: var(--green); color: white; margin-top: 0.5rem; }
+    .entry-card.paid { opacity: 0.6; }
+    .resumen-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 0.5rem; }
+    .btn-mes-nav { background: var(--accent); color: white; border: none; padding: 0.5rem 0.75rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.875rem; white-space: nowrap; transition: all 0.2s; }
+    .btn-mes-nav:active { transform: scale(0.98); }
+    .resumen-totales { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .total-card { background: white; padding: 1rem; border-radius: 0.5rem; text-align: center; }
+    .total-card .label { font-size: 0.875rem; color: #666; margin-bottom: 0.25rem; }
+    .total-card .amount { font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: bold; color: var(--accent); }
+    .resumen-categorias { margin-bottom: 1.5rem; }
+    .cat-bar { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 0.75rem; }
+    .cat-name { min-width: 80px; font-size: 0.875rem; }
+    .bar { flex: 1; height: 24px; border-radius: 0.25rem; min-width: 20px; background: var(--accent) !important; }
+    .cat-amount { min-width: 100px; text-align: right; font-weight: 500; font-size: 0.875rem; }
+    .resumen-ultimas { margin-bottom: 1.5rem; }
+    .deudas-total { background: white; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; border-left: 4px solid var(--accent); }
+    .empty { text-align: center; padding: 2rem; color: #999; }
+    @media (max-width: 480px) {
+      body { padding: 0.75rem; }
+      .resumen-totales { grid-template-columns: 1fr; }
+      .btn-group { grid-template-columns: repeat(2, 1fr); }
+      h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>Gastos 💰</h1>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="resumen">Resumen</button>
+      <button class="tab-btn" data-tab="movimientos">Movimientos</button>
+      <button class="tab-btn" data-tab="deudas">Deudas</button>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+    <div id="resumen" class="tab-content active"></div>
+    <div id="movimientos" class="tab-content"></div>
+    <div id="deudas" class="tab-content"></div>
+    <button id="btn-agregar" class="btn-principal">+ Agregar entrada</button>
+  </div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+  <div id="modal-entrada" class="modal">
+    <div class="modal-content">
+      <h2>Agregar entrada</h2>
+      <div class="form-group">
+        <label>Tipo</label>
+        <div class="btn-group" id="tipo-group">
+          <button class="btn-grupo-item active" data-type="gasto">📉 Gasto</button>
+          <button class="btn-grupo-item" data-type="ahorro">📈 Ahorro</button>
+          <button class="btn-grupo-item" data-type="deuda">💳 Deuda</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Categoría</label>
+        <div class="btn-group" id="cat-group">
+          <button class="btn-grupo-item active" data-cat="hogar">🏠 Hogar</button>
+          <button class="btn-grupo-item" data-cat="comida">🛒 Comida</button>
+          <button class="btn-grupo-item" data-cat="servicios">💡 Servicios</button>
+          <button class="btn-grupo-item" data-cat="transporte">🚌 Transporte</button>
+          <button class="btn-grupo-item" data-cat="salud">💊 Salud</button>
+          <button class="btn-grupo-item" data-cat="otro">📦 Otro</button>
+        </div>
+      </div>
+      <div id="cat-custom" class="form-group" style="display: none;">
+        <label>Nombre personalizado</label>
+        <input type="text" id="cat-nombre" placeholder="ej: Cine" maxlength="20">
+        <label style="margin-top: 0.5rem;">Emoji (opcional)</label>
+        <input type="text" id="cat-emoji" placeholder="ej: 🎬" maxlength="2">
+      </div>
+      <div class="form-group">
+        <label>Monto (Gs.)</label>
+        <input type="number" id="monto" placeholder="100000" min="0">
+      </div>
+      <div class="form-group">
+        <label>Quién paga</label>
+        <div class="btn-group" id="who-group">
+          <button class="btn-grupo-item active" data-who="Marcio">Marcio</button>
+          <button class="btn-grupo-item" data-who="Angie">Angie</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Descripción (opcional)</label>
+        <input type="text" id="desc" placeholder="ej: Super 3 Hermanos">
+      </div>
+      <div class="form-actions">
+        <button id="btn-guardar" class="btn-guardar">Guardar</button>
+        <button id="btn-cerrar" class="btn-cancelar">Cancelar</button>
+      </div>
+    </div>
+  </div>
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
-  </body>
+  <script>
+    let entries = [];
+    let currentType = 'gasto';
+    let currentCat = 'hogar';
+    let currentWho = 'Marcio';
+    let currentTab = 'resumen';
+    let viewMonth = new Date().getMonth();
+    let viewYear = new Date().getFullYear();
+    console.log('✓ App iniciada');
+  </script>
+</body>
 </html>
