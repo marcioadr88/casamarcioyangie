@@ -545,10 +545,6 @@
 
     console.log('✓ Renderizado Resumen listo');
 
-  </script>
-</body>
-</html>
-
     // Renderizar deudas
     function renderDeudas() {
       const content = document.getElementById('deudas');
@@ -645,6 +641,14 @@
         });
       });
     }
+
+    // Inicializar render en carga
+    window.addEventListener('load', () => {
+      render();
+    });
+
+    console.log('✓ App completamente inicializada');
+
 
     // Inicializar render en carga
     window.addEventListener('load', () => {
