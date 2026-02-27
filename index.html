@@ -505,3 +505,106 @@
   </script>
 </body>
 </html>
+
+    // Renderizar deudas
+    function renderDeudas() {
+      const content = document.getElementById('deudas');
+      const deudas = entries.filter(e => e.type === 'deuda');
+      const pendientes = deudas.filter(e => !e.paid);
+      const pagadas = deudas.filter(e => e.paid);
+
+      const totalPendiente = pendientes.reduce((s, e) => s + e.amount, 0);
+
+      let html = '';
+
+      // Total pendiente
+      if (totalPendiente > 0) {
+        html += `
+          <div class="deudas-total">
+            <h3>Deuda pendiente: ${fmt(totalPendiente)}</h3>
+          </div>
+        `;
+      }
+
+      // Pendientes
+      html += `<h3>Pendientes (${pendientes.length})</h3>`;
+      if (pendientes.length > 0) {
+        pendientes.forEach(e => {
+          let catDisplay = typeof e.category === 'string' ? e.category : e.category.emoji + ' ' + e.category.name;
+          const descHtml = e.description ? '<span>' + e.description + '</span>' : '';
+          html += `
+            <div class="entry-card">
+              <div class="entry-header">
+                <span class="entry-icon">💳</span>
+                <span class="entry-category">${catDisplay}</span>
+                <span class="entry-amount">${fmt(e.amount)}</span>
+              </div>
+              <div class="entry-meta">
+                <span>${e.who}</span>
+                ${descHtml}
+              </div>
+              <button class="btn-marcar-pagada" data-id="${e.id}">✓ Marcar pagada</button>
+            </div>
+          `;
+        });
+      } else {
+        html += '<p class="empty">Sin deudas pendientes</p>';
+      }
+
+      // Pagadas
+      html += `<h3>Pagadas (${pagadas.length})</h3>`;
+      if (pagadas.length > 0) {
+        pagadas.forEach(e => {
+          let catDisplay = typeof e.category === 'string' ? e.category : e.category.emoji + ' ' + e.category.name;
+          html += `
+            <div class="entry-card paid">
+              <div class="entry-header">
+                <span class="entry-icon">✓</span>
+                <span class="entry-category">${catDisplay}</span>
+                <span class="entry-amount">${fmt(e.amount)}</span>
+              </div>
+              <div class="entry-meta">
+                <span>${e.who}</span>
+              </div>
+              <button class="btn-marcar-pendiente" data-id="${e.id}">← Marcar pendiente</button>
+            </div>
+          `;
+        });
+      } else {
+        html += '<p class="empty">Sin deudas pagadas</p>';
+      }
+
+      content.innerHTML = html;
+
+      // Event listeners para marcar como pagada
+      document.querySelectorAll('.btn-marcar-pagada').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.target.dataset.id;
+          const entry = entries.find(en => en.id === id);
+          if (entry) {
+            entry.paid = true;
+            guardar();
+            render();
+          }
+        });
+      });
+
+      // Event listeners para marcar como pendiente
+      document.querySelectorAll('.btn-marcar-pendiente').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.target.dataset.id;
+          const entry = entries.find(en => en.id === id);
+          if (entry) {
+            entry.paid = false;
+            guardar();
+            render();
+          }
+        });
+      });
+    }
+
+    console.log('✓ Renderizado Deudas listo');
+
+  </script>
+</body>
+</html>
