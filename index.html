@@ -273,10 +273,58 @@
       b.addEventListener('click', (e) => {
         currentWho = e.target.dataset.who;
         actualizarBotones();
-      });
+
+    // Guardar entrada
+    function guardarEntrada() {
+      const monto = parseInt(document.getElementById('monto').value);
+      const desc = document.getElementById('desc').value.trim();
+
+      if (!monto || monto <= 0) {
+        alert('Ingresa un monto válido');
+        return;
+      }
+
+      let categoria = currentCat;
+      if (currentCat === 'otro') {
+        const nombre = document.getElementById('cat-nombre').value.trim();
+        const emoji = document.getElementById('cat-emoji').value.trim() || '📦';
+        if (!nombre) {
+          alert('Ingresa el nombre de la categoría');
+          return;
+        }
+        categoria = { name: nombre, emoji: emoji };
+      }
+
+      const ahora = new Date();
+      const entrada = {
+        id: Date.now().toString(),
+        type: currentType,
+        category: categoria,
+        amount: monto,
+        who: currentWho,
+        description: desc,
+        date: ahora.toISOString(),
+        month: ahora.getMonth(),
+        year: ahora.getFullYear(),
+        paid: false
+      };
+
+      entries.push(entrada);
+      guardar();
+      cerrarModal();
+      render();
+      console.log('✓ Entrada guardada:', entrada);
+    }
+
+    // Event listener para guardar
+    document.getElementById('btn-guardar').addEventListener('click', guardarEntrada);
+
+    // Permite guardar presionando Enter
+    document.getElementById('monto').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') guardarEntrada();
     });
 
-    console.log('✓ Formulario modal listo');
+    console.log('✓ Sistema de guardado listo');
 
   </script>
 </body>
