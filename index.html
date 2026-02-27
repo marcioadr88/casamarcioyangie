@@ -394,7 +394,113 @@
       });
     }
 
-    console.log('✓ Renderizado Movimientos listo');
+    // Renderizar resumen
+    function renderResumen() {
+      const content = document.getElementById('resumen');
+      const monthEntries = getMonthEntries().filter(e => e.type === 'gasto');
+
+      // Calcular totales por categoría
+      const byCategory = {};
+      const categories = ['hogar', 'comida', 'servicios', 'transporte', 'salud', 'otro'];
+      categories.forEach(c => { byCategory[c] = 0; });
+
+      monthEntries.forEach(e => {
+        let catKey = e.category;
+        if (typeof e.category === 'object') {
+          catKey = e.category.name || 'otro';
+        }
+        if (byCategory[catKey] !== undefined) {
+          byCategory[catKey] += e.amount;
+        }
+      });
+
+      const totalGasto = monthEntries.reduce((s, e) => s + e.amount, 0);
+      const porMarcio = monthEntries.reduce((s, e) => s + (e.who === 'Marcio' ? e.amount : 0), 0);
+      const porAngie = totalGasto - porMarcio;
+
+      const ultimasEntradas = monthEntries
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 3);
+
+      // Header con navegación de meses
+      let html = `
+        <div class="resumen-header">
+          <button class="btn-mes-nav" id="prev-mes">←</button>
+          <h2>${getMonthName(viewMonth)} ${viewYear}</h2>
+          <button class="btn-mes-nav" id="next-mes">→</button>
+        </div>
+      `;
+
+      // Totales
+      html += `
+        <div class="resumen-totales">
+          <div class="total-card">
+            <div class="label">Total gasto</div>
+            <div class="amount">${fmt(totalGasto)}</div>
+          </div>
+          <div class="total-card">
+            <div class="label">Marcio</div>
+            <div class="amount">${fmt(porMarcio)}</div>
+          </div>
+          <div class="total-card">
+            <div class="label">Angie</div>
+            <div class="amount">${fmt(porAngie)}</div>
+          </div>
+        </div>
+      `;
+
+      // Gráfico por categoría
+      html += '<div class="resumen-categorias"><h3>Por categoría</h3>';
+      categories.forEach(cat => {
+        const amount = byCategory[cat];
+        const pct = totalGasto > 0 ? (amount / totalGasto * 100) : 0;
+        if (amount > 0) {
+          html += `
+            <div class="cat-bar">
+              <span class="cat-name">${cat}</span>
+              <div class="bar" style="width: ${pct}%;"></div>
+              <span class="cat-amount">${fmt(amount)}</span>
+            </div>
+          `;
+        }
+      });
+      html += '</div>';
+
+      // Últimas entradas
+      html += '<div class="resumen-ultimas"><h3>Últimas entradas</h3>';
+      if (ultimasEntradas.length > 0) {
+        ultimasEntradas.forEach(e => {
+          html += entryHtml(e);
+        });
+      } else {
+        html += '<p class="empty">Sin movimientos</p>';
+      }
+      html += '</div>';
+
+      content.innerHTML = html;
+
+      // Event listeners para navegación de meses
+      const prevBtn = document.getElementById('prev-mes');
+      const nextBtn = document.getElementById('next-mes');
+      
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          viewMonth = (viewMonth - 1 + 12) % 12;
+          if (viewMonth === 11) viewYear--;
+          render();
+        });
+      }
+      
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          viewMonth = (viewMonth + 1) % 12;
+          if (viewMonth === 0) viewYear++;
+          render();
+        });
+      }
+    }
+
+    console.log('✓ Renderizado Resumen listo');
 
   </script>
 </body>
