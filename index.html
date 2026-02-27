@@ -322,9 +322,79 @@
     // Permite guardar presionando Enter
     document.getElementById('monto').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') guardarEntrada();
-    });
 
-    console.log('✓ Sistema de guardado listo');
+    // Renderizar movimientos
+    function entryHtml(e) {
+      const fecha = new Date(e.date);
+      let icono = '📉';
+      if (e.type === 'ahorro') icono = '📈';
+      if (e.type === 'deuda') icono = '💳';
+
+      let catDisplay = '';
+      if (typeof e.category === 'string') {
+        catDisplay = e.category;
+      } else {
+        catDisplay = e.category.emoji + ' ' + e.category.name;
+      }
+
+      const descHtml = e.description ? '<div class="entry-desc">' + e.description + '</div>' : '';
+      
+      return `
+        <div class="entry-card" data-id="${e.id}">
+          <div class="entry-header">
+            <span class="entry-icon">${icono}</span>
+            <span class="entry-category">${catDisplay}</span>
+            <span class="entry-amount">${fmt(e.amount)}</span>
+          </div>
+          <div class="entry-meta">
+            <span class="entry-date">${getWeekday(e.date)} ${fecha.getDate()}</span>
+            <span class="entry-who">${e.who}</span>
+          </div>
+          ${descHtml}
+          <div class="entry-actions">
+            <button class="btn-edit" data-id="${e.id}">✏️</button>
+            <button class="btn-delete" data-id="${e.id}">🗑️</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMovimientos() {
+      const content = document.getElementById('movimientos');
+      const monthEntries = getMonthEntries();
+
+      if (monthEntries.length === 0) {
+        content.innerHTML = '<p class="empty">Sin movimientos este mes</p>';
+        return;
+      }
+
+      monthEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      let html = '';
+      monthEntries.forEach(e => {
+        html += entryHtml(e);
+      });
+      content.innerHTML = html;
+
+      document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          if (confirm('¿Eliminar esta entrada?')) {
+            const id = e.target.dataset.id;
+            entries = entries.filter(entry => entry.id !== id);
+            guardar();
+            render();
+          }
+        });
+      });
+
+      document.querySelectorAll('.btn-edit').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          console.log('Editar entrada (próximamente):', e.target.dataset.id);
+        });
+      });
+    }
+
+    console.log('✓ Renderizado Movimientos listo');
 
   </script>
 </body>
