@@ -154,24 +154,28 @@
     let viewYear = new Date().getFullYear();
     console.log('✓ App iniciada');
     // Funciones de utilidad
-    function fmt(n) {
-      if (!n) return "Gs. 0";
-      return "Gs. " + Math.floor(n).toLocaleString("es-PY");
+    // Persistencia con localStorage
+    function guardar() {
+      localStorage.setItem('casa_entries', JSON.stringify(entries));
+      console.log('✓ Datos guardados (' + entries.length + ' registros)');
     }
-    function getMonthEntries() {
-      return entries.filter(e => e.month === viewMonth && e.year === viewYear);
+
+    function cargar() {
+      const datos = localStorage.getItem('casa_entries');
+      if (datos) {
+        entries = JSON.parse(datos);
+        console.log('✓ Cargados ' + entries.length + ' registros');
+      } else {
+        entries = [];
+        console.log('✓ Sin datos previos, iniciando vacío');
+      }
     }
-    function getMonthName(month) {
-      const names = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-                     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-      return names[month];
-    }
-    function getWeekday(dateStr) {
-      const date = new Date(dateStr);
-      const days = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
-      return days[date.getDay()];
-    }
-    console.log("✓ Funciones de utilidad listas");
+
+    // Iniciar app
+    document.addEventListener('DOMContentLoaded', () => {
+      cargar();
+    });
+
   </script>
 </body>
 </html>
