@@ -6,145 +6,78 @@
   <title>Gastos Marcio y Angie</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:wght@400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #F5F0E8;
-      --accent: #C94F2C;
-      --green: #2C7A4B;
-      --gold: #E8A020;
-      --ink: #1A1208;
-    }
+    :root { --bg: #F5F0E8; --accent: #C94F2C; --green: #2C7A4B; --gold: #E8A020; --ink: #1A1208; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; -webkit-user-select: none; user-select: none; }
+    html, body { height: 100%; }
     body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); padding: 1rem; max-width: 600px; margin: 0 auto; }
-    h1, h2, h3 { font-family: 'DM Serif Display', serif; }
-    h1 { margin-bottom: 1.5rem; font-size: 2rem; }
-    h2 { font-size: 1.5rem; margin-bottom: 1rem; }
-    h3 { font-size: 1.25rem; margin-bottom: 0.75rem; margin-top: 1rem; }
-    .app { display: flex; flex-direction: column; }
+    h1 { font-family: 'DM Serif Display', serif; font-size: 2rem; margin-bottom: 1rem; }
     .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
-    .tab-btn { flex: 1; padding: 0.75rem; border: none; background: #ddd; color: var(--ink); cursor: pointer; font-weight: 500; border-radius: 0.25rem; transition: background 0.2s; }
-    .tab-btn:active { transform: scale(0.98); }
+    .tab-btn { flex: 1; padding: 0.75rem; border: none; background: #ddd; cursor: pointer; font-weight: 500; border-radius: 0.25rem; }
     .tab-btn.active { background: var(--accent); color: white; }
-    .tab-content { display: none; min-height: 300px; }
+    .tab-content { display: none; padding: 1rem 0; }
     .tab-content.active { display: block; }
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: flex-end; }
-    .modal.open { display: flex; }
-    .modal-content { background: white; width: 100%; padding: 1.5rem; border-radius: 1rem 1rem 0 0; max-height: 90vh; overflow-y: auto; }
-    .form-group { margin-bottom: 1.5rem; }
-    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
-    .form-group input { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 0.25rem; font-family: 'DM Sans', sans-serif; font-size: 1rem; }
-    .btn-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 0.5rem; margin-bottom: 1rem; }
-    .btn-grupo-item { padding: 0.75rem; border: 2px solid #ddd; background: white; cursor: pointer; border-radius: 0.25rem; font-weight: 500; transition: all 0.2s; }
-    .btn-grupo-item:active { transform: scale(0.98); }
-    .btn-grupo-item.active { background: var(--accent); color: white; border-color: var(--accent); }
-    .form-actions { display: flex; gap: 0.5rem; margin-top: 1.5rem; }
-    .btn-guardar, .btn-cancelar { flex: 1; padding: 0.75rem; border: none; border-radius: 0.25rem; font-weight: 500; cursor: pointer; font-size: 1rem; transition: all 0.2s; }
-    .btn-guardar { background: var(--green); color: white; }
-    .btn-guardar:active { transform: scale(0.98); }
-    .btn-cancelar { background: #ddd; color: var(--ink); }
-    .btn-cancelar:active { transform: scale(0.98); }
-    .btn-principal { width: 100%; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: 0.5rem; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 1rem; transition: all 0.2s; }
-    .btn-principal:active { transform: scale(0.98); }
-    .entry-card { background: white; padding: 1rem; margin-bottom: 0.75rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+    .btn-principal { width: 100%; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: 0.5rem; font-weight: 700; cursor: pointer; font-size: 1rem; margin-top: 1rem; }
+    .entry-card { background: white; padding: 1rem; margin-bottom: 0.75rem; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     .entry-header { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 0.5rem; }
-    .entry-icon { font-size: 1.5rem; }
-    .entry-category { flex: 1; font-weight: 500; }
-    .entry-amount { font-weight: 700; color: var(--accent); }
-    .entry-meta { display: flex; gap: 1rem; font-size: 0.875rem; color: #666; margin-bottom: 0.5rem; }
-    .entry-desc { font-size: 0.875rem; color: #666; margin-bottom: 0.5rem; }
-    .entry-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.5rem; }
-    .btn-edit, .btn-delete, .btn-marcar-pagada, .btn-marcar-pendiente { padding: 0.5rem 1rem; border: none; cursor: pointer; border-radius: 0.25rem; font-size: 0.875rem; transition: all 0.2s; }
-    .btn-edit, .btn-delete { background: #f0f0f0; color: var(--ink); }
-    .btn-marcar-pagada, .btn-marcar-pendiente { width: 100%; background: var(--green); color: white; margin-top: 0.5rem; }
-    .entry-card.paid { opacity: 0.6; }
-    .resumen-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 0.5rem; }
-    .resumen-header h2 { text-align: center; flex: 1; }
-    .btn-mes-nav { background: var(--accent); color: white; border: none; padding: 0.5rem 0.75rem; border-radius: 0.25rem; cursor: pointer; font-size: 0.875rem; white-space: nowrap; transition: all 0.2s; }
-    .btn-mes-nav:active { transform: scale(0.98); }
-    .resumen-totales { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
-    .total-card { background: white; padding: 1rem; border-radius: 0.5rem; text-align: center; }
-    .total-card .label { font-size: 0.875rem; color: #666; margin-bottom: 0.25rem; }
-    .total-card .amount { font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: bold; color: var(--accent); }
-    .total-card:hover { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); }
-    .resumen-categorias { margin-bottom: 1.5rem; }
-    .cat-bar { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 0.75rem; }
-    .cat-name { min-width: 80px; font-size: 0.875rem; }
-    .bar { flex: 1; height: 24px; border-radius: 0.25rem; min-width: 20px; background: var(--accent) !important; }
-    .cat-amount { min-width: 100px; text-align: right; font-weight: 500; font-size: 0.875rem; }
-    .resumen-ultimas { margin-bottom: 1.5rem; }
-    .deudas-total { background: white; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; border-left: 4px solid var(--accent); }
+    .entry-amount { font-weight: 700; color: var(--accent); margin-left: auto; }
     .empty { text-align: center; padding: 2rem; color: #999; }
-    .entry-card:hover { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); }
-    input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201, 79, 44, 0.1); }
-    button:focus { outline: none; box-shadow: 0 0 0 3px rgba(201, 79, 44, 0.1); }
-    .btn-grupo-item:hover { border-color: var(--accent); background: #f9f9f9; }
-    .btn-grupo-item.active:hover { background: var(--accent); }
-    button { transition: all 0.15s; }
-    input { transition: border-color 0.15s, box-shadow 0.15s; }
-    @media (max-width: 480px) {
-      body { padding: 0.75rem; }
-      .resumen-totales { grid-template-columns: 1fr; }
-      .btn-group { grid-template-columns: repeat(2, 1fr); }
-      h1 { font-size: 1.5rem; }
-    }
+    .total-card { background: white; padding: 1rem; border-radius: 0.5rem; text-align: center; margin-bottom: 0.75rem; }
+    .total-amount { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--accent); }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: flex-end; align-items: flex-end; }
+    .modal.open { display: flex; }
+    .modal-content { background: white; width: 100%; padding: 1.5rem; border-radius: 1rem 1rem 0 0; max-height: 80vh; overflow-y: auto; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+    .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 0.25rem; font-size: 1rem; }
+    .btn-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 0.5rem; margin-bottom: 1rem; }
+    .btn-grupo-item { padding: 0.75rem; border: 2px solid #ddd; background: white; cursor: pointer; border-radius: 0.25rem; font-weight: 500; }
+    .btn-grupo-item.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .form-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .btn-guardar { flex: 1; background: var(--green); color: white; padding: 0.75rem; border: none; border-radius: 0.25rem; cursor: pointer; font-weight: 500; }
+    .btn-cancelar { flex: 1; background: #ddd; padding: 0.75rem; border: none; border-radius: 0.25rem; cursor: pointer; }
+    .btn-delete { padding: 0.5rem 1rem; background: #f0f0f0; border: none; border-radius: 0.25rem; cursor: pointer; }
+    .resumen-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .btn-mes { background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.25rem; cursor: pointer; }
+    @media (max-width: 480px) { body { padding: 0.75rem; } }
   </style>
 </head>
 <body>
-  <div class="app">
-    <h1>Gastos 💰</h1>
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="resumen">Resumen</button>
-      <button class="tab-btn" data-tab="movimientos">Movimientos</button>
-      <button class="tab-btn" data-tab="deudas">Deudas</button>
-    </div>
-    <div id="resumen" class="tab-content active"></div>
-    <div id="movimientos" class="tab-content"></div>
-    <div id="deudas" class="tab-content"></div>
-    <button id="btn-agregar" class="btn-principal">+ Agregar entrada</button>
+  <h1>Gastos 💰</h1>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="resumen">Resumen</button>
+    <button class="tab-btn" data-tab="movimientos">Movimientos</button>
+    <button class="tab-btn" data-tab="deudas">Deudas</button>
   </div>
+  <div id="resumen" class="tab-content active"></div>
+  <div id="movimientos" class="tab-content"></div>
+  <div id="deudas" class="tab-content"></div>
+  <button id="btn-agregar" class="btn-principal">+ Agregar entrada</button>
 
-  <div id="modal-entrada" class="modal">
+  <div id="modal" class="modal">
     <div class="modal-content">
       <h2>Agregar entrada</h2>
       <div class="form-group">
         <label>Tipo</label>
-        <div class="btn-group" id="tipo-group">
-          <button class="btn-grupo-item active" data-type="gasto">📉 Gasto</button>
-          <button class="btn-grupo-item" data-type="ahorro">📈 Ahorro</button>
-          <button class="btn-grupo-item" data-type="deuda">💳 Deuda</button>
+        <div class="btn-group">
+          <button class="btn-grupo-item active" data-type="gasto">Gasto</button>
+          <button class="btn-grupo-item" data-type="ahorro">Ahorro</button>
+          <button class="btn-grupo-item" data-type="deuda">Deuda</button>
         </div>
-      </div>
-      <div class="form-group">
-        <label>Categoría</label>
-        <div class="btn-group" id="cat-group">
-          <button class="btn-grupo-item active" data-cat="hogar">🏠 Hogar</button>
-          <button class="btn-grupo-item" data-cat="comida">🛒 Comida</button>
-          <button class="btn-grupo-item" data-cat="servicios">💡 Servicios</button>
-          <button class="btn-grupo-item" data-cat="transporte">🚌 Transporte</button>
-          <button class="btn-grupo-item" data-cat="salud">💊 Salud</button>
-          <button class="btn-grupo-item" data-cat="otro">📦 Otro</button>
-        </div>
-      </div>
-      <div id="cat-custom" class="form-group" style="display: none;">
-        <label>Nombre personalizado</label>
-        <input type="text" id="cat-nombre" placeholder="ej: Cine" maxlength="20">
-        <label style="margin-top: 0.5rem;">Emoji (opcional)</label>
-        <input type="text" id="cat-emoji" placeholder="ej: 🎬" maxlength="2">
       </div>
       <div class="form-group">
         <label>Monto (Gs.)</label>
-        <input type="number" id="monto" placeholder="100000" min="0">
+        <input type="number" id="monto" placeholder="100000" min="1">
       </div>
       <div class="form-group">
-        <label>Quién paga</label>
-        <div class="btn-group" id="who-group">
-          <button class="btn-grupo-item active" data-who="Marcio">Marcio</button>
-          <button class="btn-grupo-item" data-who="Angie">Angie</button>
-        </div>
+        <label>Quien paga</label>
+        <select id="quien">
+          <option value="Marcio">Marcio</option>
+          <option value="Angie">Angie</option>
+        </select>
       </div>
       <div class="form-group">
-        <label>Descripción (opcional)</label>
-        <input type="text" id="desc" placeholder="ej: Super 3 Hermanos">
+        <label>Descripcion</label>
+        <input type="text" id="desc" placeholder="Supermercado">
       </div>
       <div class="form-actions">
         <button id="btn-guardar" class="btn-guardar">Guardar</button>
@@ -154,242 +87,136 @@
   </div>
 
   <script>
-    let entries = [];
-    let currentType = 'gasto';
-    let currentCat = 'hogar';
-    let currentWho = 'Marcio';
-    let currentTab = 'resumen';
-    let viewMonth = new Date().getMonth();
-    let viewYear = new Date().getFullYear();
+let entries = [];
+let currentType = 'gasto';
+let currentTab = 'resumen';
 
-    function fmt(n) {
-      if (!n) return 'Gs. 0';
-      return 'Gs. ' + Math.floor(n).toLocaleString('es-PY');
-    }
+function fmt(n) { return 'Gs. ' + n.toLocaleString('es-PY'); }
 
-    function getMonthEntries() {
-      return entries.filter(e => e.month === viewMonth && e.year === viewYear);
-    }
+function guardar() {
+  localStorage.setItem('casa_entries', JSON.stringify(entries));
+}
 
-    function getMonthName(month) {
-      const names = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-      return names[month];
-    }
+function cargar() {
+  const d = localStorage.getItem('casa_entries');
+  if (d) entries = JSON.parse(d);
+}
 
-    function getWeekday(dateStr) {
-      const date = new Date(dateStr);
-      const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-      return days[date.getDay()];
-    }
+function render() {
+  const mes = new Date().getMonth();
+  const ano = new Date().getFullYear();
+  const mesEntries = entries.filter(e => e.month === mes && e.year === ano);
 
-    function guardar() {
-      localStorage.setItem('casa_entries', JSON.stringify(entries));
-      console.log('✓ Datos guardados (' + entries.length + ' registros)');
-    }
-
-    function cargar() {
-      const datos = localStorage.getItem('casa_entries');
-      if (datos) {
-        entries = JSON.parse(datos);
-        console.log('✓ Cargados ' + entries.length + ' registros');
-      } else {
-        entries = [];
-        console.log('✓ Sin datos previos, iniciando vacío');
-      }
-    }
-
-    function render() {
-      if (currentTab === 'resumen') renderResumen();
-      else if (currentTab === 'movimientos') renderMovimientos();
-      else if (currentTab === 'deudas') renderDeudas();
-    }
-
-    function renderResumen() {
-      const content = document.getElementById('resumen');
-      const monthEntries = getMonthEntries().filter(e => e.type === 'gasto');
-      const byCategory = {};
-      const categories = ['hogar', 'comida', 'servicios', 'transporte', 'salud', 'otro'];
-      categories.forEach(c => { byCategory[c] = 0; });
-      monthEntries.forEach(e => {
-        let catKey = e.category;
-        if (typeof e.category === 'object') catKey = e.category.name || 'otro';
-        if (byCategory[catKey] !== undefined) byCategory[catKey] += e.amount;
+  if (currentTab === 'resumen') {
+    const gastos = mesEntries.filter(e => e.type === 'gasto');
+    const total = gastos.reduce((s, e) => s + e.amount, 0);
+    const marcio = gastos.reduce((s, e) => s + (e.who === 'Marcio' ? e.amount : 0), 0);
+    const angie = total - marcio;
+    let html = '<div class="total-card"><div>Total</div><div class="total-amount">' + fmt(total) + '</div></div>';
+    html += '<div class="total-card"><div>Marcio</div><div class="total-amount">' + fmt(marcio) + '</div></div>';
+    html += '<div class="total-card"><div>Angie</div><div class="total-amount">' + fmt(angie) + '</div></div>';
+    if (gastos.length > 0) {
+      gastos.slice(0, 5).forEach(e => {
+        const f = new Date(e.date);
+        html += '<div class="entry-card"><div class="entry-header"><span>' + e.who + '</span><span class="entry-amount">' + fmt(e.amount) + '</span></div><div>' + e.description + '</div></div>';
       });
-      const totalGasto = monthEntries.reduce((s, e) => s + e.amount, 0);
-      const porMarcio = monthEntries.reduce((s, e) => s + (e.who === 'Marcio' ? e.amount : 0), 0);
-      const porAngie = totalGasto - porMarcio;
-      const ultimasEntradas = monthEntries.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
-      let html = '<div class="resumen-header"><button class="btn-mes-nav" id="prev-mes">←</button><h2>' + getMonthName(viewMonth) + ' ' + viewYear + '</h2><button class="btn-mes-nav" id="next-mes">→</button></div>';
-      html += '<div class="resumen-totales"><div class="total-card"><div class="label">Total gasto</div><div class="amount">' + fmt(totalGasto) + '</div></div><div class="total-card"><div class="label">Marcio</div><div class="amount">' + fmt(porMarcio) + '</div></div><div class="total-card"><div class="label">Angie</div><div class="amount">' + fmt(porAngie) + '</div></div></div>';
-      html += '<div class="resumen-categorias"><h3>Por categoría</h3>';
-      categories.forEach(cat => {
-        const amount = byCategory[cat];
-        const pct = totalGasto > 0 ? (amount / totalGasto * 100) : 0;
-        if (amount > 0) {
-          html += '<div class="cat-bar"><span class="cat-name">' + cat + '</span><div class="bar" style="width: ' + pct + '%;"></div><span class="cat-amount">' + fmt(amount) + '</span></div>';
-        }
-      });
-      html += '</div><div class="resumen-ultimas"><h3>Últimas entradas</h3>';
-      if (ultimasEntradas.length > 0) ultimasEntradas.forEach(e => html += entryHtml(e));
-      else html += '<p class="empty">Sin movimientos</p>';
-      html += '</div>';
-      content.innerHTML = html;
-      const prevBtn = document.getElementById('prev-mes');
-      const nextBtn = document.getElementById('next-mes');
-      if (prevBtn) prevBtn.addEventListener('click', () => { viewMonth = (viewMonth - 1 + 12) % 12; if (viewMonth === 11) viewYear--; render(); });
-      if (nextBtn) nextBtn.addEventListener('click', () => { viewMonth = (viewMonth + 1) % 12; if (viewMonth === 0) viewYear++; render(); });
-    }
-
-    function entryHtml(e) {
-      const fecha = new Date(e.date);
-      let icono = '📉';
-      if (e.type === 'ahorro') icono = '📈';
-      if (e.type === 'deuda') icono = '💳';
-      let catDisplay = typeof e.category === 'string' ? e.category : e.category.emoji + ' ' + e.category.name;
-      const descHtml = e.description ? '<div class="entry-desc">' + e.description + '</div>' : '';
-      return '<div class="entry-card" data-id="' + e.id + '"><div class="entry-header"><span class="entry-icon">' + icono + '</span><span class="entry-category">' + catDisplay + '</span><span class="entry-amount">' + fmt(e.amount) + '</span></div><div class="entry-meta"><span class="entry-date">' + getWeekday(e.date) + ' ' + fecha.getDate() + '</span><span class="entry-who">' + e.who + '</span></div>' + descHtml + '<div class="entry-actions"><button class="btn-edit" data-id="' + e.id + '">✏️</button><button class="btn-delete" data-id="' + e.id + '">🗑️</button></div></div>';
-    }
-
-    function renderMovimientos() {
-      const content = document.getElementById('movimientos');
-      const monthEntries = getMonthEntries();
-      if (monthEntries.length === 0) { content.innerHTML = '<p class="empty">Sin movimientos este mes</p>'; return; }
-      monthEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
-      let html = '';
-      monthEntries.forEach(e => html += entryHtml(e));
-      content.innerHTML = html;
-      document.querySelectorAll('.btn-delete').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          if (confirm('¿Eliminar?')) {
-            const id = e.target.dataset.id;
-            entries = entries.filter(entry => entry.id !== id);
-            guardar();
-            render();
-          }
-        });
+    } else html += '<p class="empty">Sin movimientos</p>';
+    document.getElementById('resumen').innerHTML = html;
+  } else if (currentTab === 'movimientos') {
+    let html = '';
+    if (mesEntries.length === 0) html = '<p class="empty">Sin movimientos</p>';
+    else {
+      mesEntries.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(e => {
+        const f = new Date(e.date);
+        html += '<div class="entry-card"><div class="entry-header"><span>' + e.who + '</span><span class="entry-amount">' + fmt(e.amount) + '</span></div><div>' + e.description + '</div><button class="btn-delete" onclick="eliminar(this)" data-id="' + e.id + '">X</button></div>';
       });
     }
-
-    function renderDeudas() {
-      const content = document.getElementById('deudas');
-      const deudas = entries.filter(e => e.type === 'deuda');
-      const pendientes = deudas.filter(e => !e.paid);
-      const pagadas = deudas.filter(e => e.paid);
-      const totalPendiente = pendientes.reduce((s, e) => s + e.amount, 0);
-      let html = '';
-      if (totalPendiente > 0) html += '<div class="deudas-total"><h3>Deuda pendiente: ' + fmt(totalPendiente) + '</h3></div>';
-      html += '<h3>Pendientes (' + pendientes.length + ')</h3>';
-      if (pendientes.length > 0) {
-        pendientes.forEach(e => {
-          let catDisplay = typeof e.category === 'string' ? e.category : e.category.emoji + ' ' + e.category.name;
-          const descHtml = e.description ? '<span>' + e.description + '</span>' : '';
-          html += '<div class="entry-card"><div class="entry-header"><span class="entry-icon">💳</span><span class="entry-category">' + catDisplay + '</span><span class="entry-amount">' + fmt(e.amount) + '</span></div><div class="entry-meta"><span>' + e.who + '</span>' + descHtml + '</div><button class="btn-marcar-pagada" data-id="' + e.id + '">✓ Marcar pagada</button></div>';
-        });
-      } else html += '<p class="empty">Sin deudas pendientes</p>';
-      html += '<h3>Pagadas (' + pagadas.length + ')</h3>';
-      if (pagadas.length > 0) {
-        pagadas.forEach(e => {
-          let catDisplay = typeof e.category === 'string' ? e.category : e.category.emoji + ' ' + e.category.name;
-          html += '<div class="entry-card paid"><div class="entry-header"><span class="entry-icon">✓</span><span class="entry-category">' + catDisplay + '</span><span class="entry-amount">' + fmt(e.amount) + '</span></div><div class="entry-meta"><span>' + e.who + '</span></div><button class="btn-marcar-pendiente" data-id="' + e.id + '">← Marcar pendiente</button></div>';
-        });
-      } else html += '<p class="empty">Sin deudas pagadas</p>';
-      content.innerHTML = html;
-      document.querySelectorAll('.btn-marcar-pagada').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const id = e.target.dataset.id;
-          const entry = entries.find(en => en.id === id);
-          if (entry) { entry.paid = true; guardar(); render(); }
-        });
-      });
-      document.querySelectorAll('.btn-marcar-pendiente').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const id = e.target.dataset.id;
-          const entry = entries.find(en => en.id === id);
-          if (entry) { entry.paid = false; guardar(); render(); }
-        });
+    document.getElementById('movimientos').innerHTML = html;
+  } else if (currentTab === 'deudas') {
+    const deudas = entries.filter(e => e.type === 'deuda');
+    const pend = deudas.filter(e => !e.paid);
+    const pag = deudas.filter(e => e.paid);
+    let html = '';
+    if (pend.length > 0) {
+      html += '<h3>Pendientes</h3>';
+      pend.forEach(e => {
+        html += '<div class="entry-card"><div class="entry-header"><span>' + e.who + '</span><span class="entry-amount">' + fmt(e.amount) + '</span></div><button onclick="pagar(this)" data-id="' + e.id + '">Pagar</button></div>';
       });
     }
-
-    function abrirModal() {
-      document.getElementById('modal-entrada').classList.add('open');
-    }
-
-    function cerrarModal() {
-      document.getElementById('modal-entrada').classList.remove('open');
-      resetearFormulario();
-    }
-
-    function resetearFormulario() {
-      currentType = 'gasto';
-      currentCat = 'hogar';
-      currentWho = 'Marcio';
-      document.getElementById('monto').value = '';
-      document.getElementById('desc').value = '';
-      document.getElementById('cat-nombre').value = '';
-      document.getElementById('cat-emoji').value = '';
-      actualizarBotones();
-    }
-
-    function actualizarBotones() {
-      document.querySelectorAll('.btn-grupo-item').forEach(b => {
-        if (b.dataset.type) b.classList.toggle('active', b.dataset.type === currentType);
-        if (b.dataset.cat) b.classList.toggle('active', b.dataset.cat === currentCat);
-        if (b.dataset.who) b.classList.toggle('active', b.dataset.who === currentWho);
+    if (pag.length > 0) {
+      html += '<h3>Pagadas</h3>';
+      pag.forEach(e => {
+        html += '<div class="entry-card" style="opacity:0.6;"><div class="entry-header"><span>' + e.who + '</span><span class="entry-amount">' + fmt(e.amount) + '</span></div></div>';
       });
     }
+    if (pend.length === 0 && pag.length === 0) html = '<p class="empty">Sin deudas</p>';
+    document.getElementById('deudas').innerHTML = html;
+  }
+}
 
-    function guardarEntrada() {
-      const monto = parseInt(document.getElementById('monto').value);
-      const desc = document.getElementById('desc').value.trim();
-      if (!monto || monto <= 0) { alert('Ingresa un monto válido'); return; }
-      let categoria = currentCat;
-      if (currentCat === 'otro') {
-        const nombre = document.getElementById('cat-nombre').value.trim();
-        const emoji = document.getElementById('cat-emoji').value.trim() || '📦';
-        if (!nombre) { alert('Ingresa el nombre de la categoría'); return; }
-        categoria = { name: nombre, emoji: emoji };
-      }
-      const ahora = new Date();
-      const entrada = { id: Date.now().toString(), type: currentType, category: categoria, amount: monto, who: currentWho, description: desc, date: ahora.toISOString(), month: ahora.getMonth(), year: ahora.getFullYear(), paid: false };
-      entries.push(entrada);
-      guardar();
-      cerrarModal();
-      render();
-    }
+function eliminar(btn) {
+  const id = btn.dataset.id;
+  entries = entries.filter(e => e.id !== id);
+  guardar();
+  render();
+}
 
-    document.getElementById('btn-agregar').addEventListener('click', abrirModal);
-    document.getElementById('btn-cerrar').addEventListener('click', cerrarModal);
-    document.getElementById('modal-entrada').addEventListener('click', (e) => { if (e.target.id === 'modal-entrada') cerrarModal(); });
-    document.querySelectorAll('#tipo-group .btn-grupo-item').forEach(b => {
-      b.addEventListener('click', (e) => { currentType = e.target.dataset.type; actualizarBotones(); });
-    });
-    document.querySelectorAll('#cat-group .btn-grupo-item').forEach(b => {
-      b.addEventListener('click', (e) => {
-        currentCat = e.target.dataset.cat;
-        const customDiv = document.getElementById('cat-custom');
-        customDiv.style.display = currentCat === 'otro' ? 'block' : 'none';
-        actualizarBotones();
-      });
-    });
-    document.querySelectorAll('#who-group .btn-grupo-item').forEach(b => {
-      b.addEventListener('click', (e) => { currentWho = e.target.dataset.who; actualizarBotones(); });
-    });
-    document.getElementById('btn-guardar').addEventListener('click', guardarEntrada);
-    document.getElementById('monto').addEventListener('keypress', (e) => { if (e.key === 'Enter') guardarEntrada(); });
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        e.target.classList.add('active');
-        currentTab = e.target.dataset.tab;
-        document.getElementById(currentTab).classList.add('active');
-        render();
-      });
-    });
+function pagar(btn) {
+  const id = btn.dataset.id;
+  const e = entries.find(x => x.id === id);
+  if (e) { e.paid = true; guardar(); render(); }
+}
 
-    document.addEventListener('DOMContentLoaded', () => { cargar(); });
-    window.addEventListener('load', () => { render(); });
-    console.log('✓ App completamente inicializada');
+document.getElementById('btn-agregar').addEventListener('click', () => {
+  document.getElementById('modal').classList.add('open');
+});
+
+document.getElementById('btn-cerrar').addEventListener('click', () => {
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('monto').value = '';
+  document.getElementById('desc').value = '';
+});
+
+document.getElementById('btn-guardar').addEventListener('click', () => {
+  const m = parseInt(document.getElementById('monto').value);
+  if (!m) { alert('Ingresa monto'); return; }
+  entries.push({
+    id: Date.now().toString(),
+    type: currentType,
+    amount: m,
+    who: document.getElementById('quien').value,
+    description: document.getElementById('desc').value,
+    date: new Date().toISOString(),
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+    paid: false
+  });
+  guardar();
+  document.getElementById('modal').classList.remove('open');
+  render();
+});
+
+document.querySelectorAll('.tab-btn').forEach(b => {
+  b.addEventListener('click', e => {
+    document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+    e.target.classList.add('active');
+    currentTab = e.target.dataset.tab;
+    document.getElementById(currentTab).classList.add('active');
+    render();
+  });
+});
+
+document.querySelectorAll('[data-type]').forEach(b => {
+  b.addEventListener('click', e => {
+    document.querySelectorAll('[data-type]').forEach(x => x.classList.remove('active'));
+    e.target.classList.add('active');
+    currentType = e.target.dataset.type;
+  });
+});
+
+cargar();
+window.addEventListener('load', render);
   </script>
 </body>
 </html>
