@@ -72,6 +72,49 @@
     .resumen-ultimas { margin-bottom: 1.5rem; }
     .deudas-total { background: white; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; border-left: 4px solid var(--accent); }
     .empty { text-align: center; padding: 2rem; color: #999; }
+
+    .resumen-header h2 {
+      text-align: center;
+      flex: 1;
+    }
+
+    .entry-card:hover {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(201, 79, 44, 0.1);
+    }
+
+    button:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(201, 79, 44, 0.1);
+    }
+
+    .btn-grupo-item:hover {
+      border-color: var(--accent);
+      background: #f9f9f9;
+    }
+
+    .btn-grupo-item.active:hover {
+      background: var(--accent);
+    }
+
+    .total-card:hover {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Animaciones suaves */
+    button {
+      transition: all 0.15s;
+    }
+
+    input {
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
     @media (max-width: 480px) {
       body { padding: 0.75rem; }
       .resumen-totales { grid-template-columns: 1fr; }
@@ -603,7 +646,12 @@
       });
     }
 
-    console.log('✓ Renderizado Deudas listo');
+    // Inicializar render en carga
+    window.addEventListener('load', () => {
+      render();
+    });
+
+    console.log('✓ App completamente inicializada');
 
   </script>
 </body>
